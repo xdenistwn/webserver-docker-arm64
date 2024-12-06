@@ -1,0 +1,28 @@
+services:
+  nginx:
+    image: xnginx:2.0
+    container_name: nginx
+    volumes:
+      - ./projects:/var/www/html
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+      - 443:80
+    networks:
+      - docker_web_server
+
+  php71:
+    image: xphp:7.1-fpm
+    container_name: php71
+    volumes:
+      - ./projects:/var/www/html
+      - ./config/php/v7/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+    expose:
+      - 9000
+    networks:
+      - docker_web_server
+
+networks:
+  docker_web_server:
+    driver: bridge
