@@ -59,6 +59,9 @@ webserver-docker-arm64 is a web server application that run using docker contain
     
     yii2 console 
     - docker exec -it php71 sh -c "php yii some/controller-script"
+    
+    composer console 
+    - docker exec -it php71 sh -c "cd your_project && composer --version"
     ```
 
 ## Directory Structure
