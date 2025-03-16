@@ -1,6 +1,6 @@
 services:
   nginx:
-    image: xnginx:2.0
+    image: nginx:latest-dev
     container_name: nginx
     volumes:
       - ./projects:/var/www/html
@@ -11,10 +11,10 @@ services:
       - 80:80
       - 443:80
     networks:
-      - docker_web_server
+      - internal_dockernet
 
   php71:
-    image: php71:1.0.0-fpm
+    image: php71:latest-dev
     container_name: php71
     volumes:
       - ./projects:/var/www/html
@@ -24,8 +24,8 @@ services:
     expose:
       - 9000
     networks:
-      - docker_web_server
+      - internal_dockernet
 
 networks:
-  docker_web_server:
+  internal_dockernet:
     driver: bridge
