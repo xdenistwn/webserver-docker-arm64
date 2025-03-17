@@ -1,4 +1,4 @@
-# What is this?
+# About !t
 webserver-docker-arm64 is a web server application that run using docker containers tools and has ability of sharing project directory under localhost domain, like xampp htdocs does. this version work only for arm64 CPU.
 
 `Main goals of using container`
@@ -52,7 +52,7 @@ webserver-docker-arm64 is a web server application that run using docker contain
     docker compose down
     ```
 
-- How to run container_name **php71** console script from outside container
+- How to run **php71** console script from outside container
     ```bash
     check php modules
     - docker exec -it php71 sh -c "php -m"
@@ -64,14 +64,20 @@ webserver-docker-arm64 is a web server application that run using docker contain
     - docker exec -it php71 sh -c "cd your_project && composer --version"
     ```
 
-## Directory Structure
+## Directory & Files Structure
 ```
-/ !root folder
-/config !custom configuration
-/config/nginx !custom configuration for nginx container
-/config/php !custom configuration for php
-/dockerfiles !docker files config
-/projects !all development projects
+/ --- root folder
+/config --- custom configuration
+/config/nginx --- custom configuration for nginx container
+/config/nginx/nginx.conf --- default or entry point nginx config
+/config/php --- custom configuration for php
+/config/php/v7/zz-docker.conf --- config for php-fpm 7.*
+/config/php/v8/zz-docker.conf --- config for php-fpm 8.*
+/dockerfiles --- docker files config
+/projects --- all development projects inside this dir
+/docker-compose.yml ---- docker compose configuration
+/.gitignore --- :x
+
 ```
 
 ## Notes
