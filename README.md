@@ -11,9 +11,13 @@ webserver-docker-arm64 is a web server application that run using docker contain
 `Current stacks`
 - Nginx latest
 - PHP 7.1
-- Wkhtmltopdf 0.12.6
-- Composer 2.2
-- Oracle 11.2.0.4
+    - Wkhtmltopdf 0.12.6
+    - Composer 2.2
+    - DB connect
+        - Oracle 11.2 / 19
+        - PostgreSQL
+        - MySQL
+        - PDO
 
 `Requirements`
 - Machine that using arm64 architecture
@@ -86,3 +90,7 @@ webserver-docker-arm64 is a web server application that run using docker contain
 - If you found any error/bug/improvement, please raise in issues.
 - any help will be appreciated.
 - DO NOT update .gitignore especially /projects dir 😱
+
+## Next Update Goals
+- Ability to use PHP 8.1 and the other related libraries
+- Node.js runtime
