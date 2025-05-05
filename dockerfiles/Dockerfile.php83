@@ -1,0 +1,87 @@
+FROM php:8.3.20-fpm
+
+RUN apt-get update && \
+    apt-get install -y \
+        # os check util
+        wget \
+        net-tools \
+        iputils-ping \
+        telnet \
+        zip \
+        vim \
+        unzip \
+        # php dependencies
+        libssl-dev \
+	      libzip-dev \
+        libcurl4-openssl-dev \
+        libmcrypt-dev \
+        libxml2-dev \
+        zlib1g-dev \
+        # wkhtmltopdf dependencies
+        libxext6 \
+        fontconfig \
+        xfonts-base \
+        xfonts-75dpi \
+        libxrender1 \
+	      libjpeg62-turbo-dev \
+        # postgresql dependencies
+        libpq-dev \
+        # oracle dependencies
+        libaio1
+
+RUN docker-php-ext-install pdo pdo_pgsql mysqli pdo_mysql
+
+##
+# Oracle Installation
+# ENV setup
+###
+ENV LD_LIBRARY_PATH="/opt/oracle/instantclient_19_6"
+ENV ORACLE_HOME="/opt/oracle/instantclient_19_6"
+ENV OCI_HOME="/opt/oracle/instantclient_19_6"
+ENV OCI_LIB_DIR="/opt/oracle/instantclient_19_6"
+ENV OCI_INCLUDE_DIR="/opt/oracle/instantclient_19_6/sdk/include"
+ENV OCI_VERSION=19
+
+##
+# Oracle Installation
+# Install Procedure
+### 
+RUN mkdir /opt/oracle
+ADD dockerfiles/oracle/instantclient-basic-linux-arm64.zip /opt/oracle
+ADD dockerfiles/oracle/instantclient-sdk-linux-arm64.zip /opt/oracle
+RUN cd /opt/oracle && unzip instantclient-basic-linux-arm64.zip -d /opt/oracle \
+    && unzip instantclient-sdk-linux-arm64.zip -d /opt/oracle \
+    && echo /opt/oracle/instantclient_19_19 > /etc/ld.so.conf.d/oracle-instantclient.conf \
+    && ldconfig
+
+RUN echo 'instantclient,/opt/oracle/instantclient_19_19' | pecl install oci8 \
+    && echo "extension=oci8.so" >> /usr/local/etc/php/conf.d/oci8.ini
+
+RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_19_19,19.19 && \
+    echo "extension=pdo_oci.so" > /usr/local/etc/php/conf.d/pdo_oci.ini
+
+RUN docker-php-ext-install \
+    pdo_oci \
+    bcmath \
+    soap \
+    sockets \
+    sysvmsg \
+    sysvsem \
+    sysvshm \
+    zip
+
+RUN docker-php-ext-enable pdo_pgsql pdo_mysql
+
+# install wkhtmltopdf ARM64 base
+RUN mkdir /opt/wkhtmltopdf
+RUN cd /opt/wkhtmltopdf \
+    && wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_arm64.deb \
+    && dpkg -i wkhtmltox_0.12.6.1-3.bookworm_arm64.deb \
+    && rm wkhtmltox_0.12.6.1-3.bookworm_arm64.deb
+
+# install composer
+COPY --from=composer:2.8.8 /usr/bin/composer /usr/bin/composer
+RUN composer self-update
+
+# Clean up
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
