@@ -30,10 +30,11 @@ webserver-docker-arm64 is a web server application that run using docker contain
     - MySQL
     - PDO
 
-`Requirements`
+`Requirements` **important**
 
 - Machine that using amd64 architecture
 - Pre-installed docker engine / desktop
+  - if you'r using docker engine you need to install _colima_ lightweight vm, you can follow this good medium post [click here!](https://devcracker.medium.com/how-to-add-a-link-or-hyperlink-in-readme-md-file-68752bb6499e)
 - Internet Access (to download and build images)
 - Clone / Download this repo
 
@@ -63,55 +64,44 @@ webserver-docker-arm64 is a web server application that run using docker contain
   docker build -t php83:latest-dev -f ./dockerfiles/Dockerfile.php83 .
   ```
 
-- Run Web Server using docker-compose.yml (important: dont forget to change YOUR_FREAKING_SHARED_PROJECT_HERE with your own sharing project folder directory in docker-compose.yml)
+- Run Web Server using docker-compose.yml (important: dont forget to change YOUR_SHARED_PROJECTS_DIRECTORY with your own sharing project folder directory in docker-compose.yml)
 
   ```bash
-  docker compose up -d
+  docker-compose up -d
   ```
 
 - Stop Web Server using docker-compose.yml
 
   ```bash
-  docker compose stop
+  docker-compose stop
   ```
 
 - Remove/Delete Web Server using docker-compose.yml (optional)
 
   ```bash
-  docker compose down
+  docker-compose down
   ```
 
-- How to run **php71** console script from outside container
+- How to run **php83** console script from outside container
+
   ```bash
   check php modules
-  - docker exec -it php71 sh -c "php -m"
+  - docker exec -it php83 sh -c "php -m"
 
   yii2 console
-  - docker exec -it php71 sh -c "php yii some/controller-script"
+  - docker exec -it php83 sh -c "php yii some/controller-script"
 
-  composer console
-  - docker exec -it php71 sh -c "cd your_project && composer --version"
+  composer
+  - docker exec -it php83 sh -c "cd your_project && composer --version"
+
+  install project with composer
+  - docker exec -it php83 sh -c "composer create-project --prefer-dist yiisoft/yii2-app-basic basic"
   ```
 
-## Important for Windows user using WSL2
-
-You need to enable filesystem sharing between WSL and Windows File system.
-Temporary way, below:
-
-- open up wsl config in wsl distro, here im using Ubuntu-22.04
-
-  ```bash
-  sudo vi /etc/wsl.conf
+- After Install some project try to access it with this url
   ```
-
-- Add below config at the bottom or last line
-
-  ```bash
-  	[automount]
-  options="metadata"
+  http://localhost/your_yii2_project/web
   ```
-
-- Save it. then try again, now wsl should be able to run chmod/chown under windows file system.
 
 ## Directory & Files Structure
 
@@ -135,9 +125,10 @@ Temporary way, below:
 - Some projects may need some adjustment in the configuration.
 - We still maintain & update this repo for flexibility, patch and security update.
 - If you found any error/bug/improvement, please raise in issues.
-- any help will be appreciated.
+- any help/contribution will be appreciated.
 
 ## Next Update Goals
 
 - Node.js runtime
 - Making Stable in WSL2 system
+- Updating docker build deprecated version in macos

@@ -1,16 +1,24 @@
+# sample
+# YOUR_SHARED_PROJECTS_DIRECTORY = /Usr/user-pc/work_dir/projects
+# put your working svn, git project inside it.
+#
+# nginx port
+# 80 => using php 83
+# 8070 => using php 71
+
 services:
   nginx:
     image: nginx:latest-dev
     container_name: nginx
     volumes:
-      - /Users/denisetiawan/Work/sqiva/projects:/var/www/html
+      - YOUR_SHARED_PROJECTS_DIRECTORY:/var/www/html
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./config/nginx/fastcgi_params:/etc/nginx/fastcgi_params
     ports:
       - 80:80
       - 443:443
-      - 8080:8084
+      - 8070:8070
     networks:
       - internal_dockernet
 
@@ -18,7 +26,7 @@ services:
     image: php71:latest-dev
     container_name: php71
     volumes:
-      - /Users/denisetiawan/Work/sqiva/projects:/var/www/html
+      - YOUR_SHARED_PROJECTS_DIRECTORY:/var/www/html
       - ./config/php/v7/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
     environment:
       - TZ=Asia/Jakarta
@@ -31,7 +39,7 @@ services:
     image: php83:latest-dev
     container_name: php83
     volumes:
-      - /Users/denisetiawan/Work/sqiva/projects:/var/www/html
+      - YOUR_SHARED_PROJECTS_DIRECTORY:/var/www/html
       - ./config/php/v8/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
     environment:
       - TZ=Asia/Jakarta
