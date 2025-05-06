@@ -34,7 +34,7 @@ webserver-docker-arm64 is a web server application that run using docker contain
 
 - Machine that using amd64 architecture
 - Pre-installed docker engine / desktop
-  - if you'r using docker engine you need to install _colima_ lightweight vm, you can follow this good medium post [click here!](https://devcracker.medium.com/how-to-add-a-link-or-hyperlink-in-readme-md-file-68752bb6499e)
+  - if you'r using docker engine only you need to install _colima_ lightweight vm, you can follow this good medium post [click here!](https://devcracker.medium.com/how-to-add-a-link-or-hyperlink-in-readme-md-file-68752bb6499e)
 - Internet Access (to download and build images)
 - Clone / Download this repo
 
@@ -89,13 +89,13 @@ webserver-docker-arm64 is a web server application that run using docker contain
   - docker exec -it php83 sh -c "php -m"
 
   yii2 console
-  - docker exec -it php83 sh -c "php yii some/controller-script"
+  - docker exec -it php83 sh -c "cd your_yii2_project php yii some/controller-script"
 
   composer
-  - docker exec -it php83 sh -c "cd your_project && composer --version"
+  - docker exec -it php83 sh -c "cd your_yii2_project && composer --version"
 
   install project with composer
-  - docker exec -it php83 sh -c "composer create-project --prefer-dist yiisoft/yii2-app-basic basic"
+  - docker exec -it php83 sh -c "composer create-project --prefer-dist yiisoft/yii2-app-basic your_yii2_project"
   ```
 
 - After Install some project try to access it with this url
