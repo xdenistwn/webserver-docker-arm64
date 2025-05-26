@@ -10,6 +10,8 @@ RUN apt-get update && \
         zip \
         vim \
         unzip \
+        # phpspreadshit
+        libpng-dev \
         # php dependencies
         libssl-dev \
         libcurl4-openssl-dev \
@@ -68,7 +70,8 @@ RUN docker-php-ext-install \
     sysvmsg \
     sysvsem \
     sysvshm \
-    zip
+    zip \
+    gd
 
 RUN docker-php-ext-enable pdo_pgsql pdo_mysql
 
@@ -80,9 +83,9 @@ RUN cd /opt/wkhtmltopdf \
     && rm wkhtmltox_0.12.6-1.buster_arm64.deb
 
 # install composer
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
-# support composer:2.2 for php 7.1.33
-RUN composer self-update
+COPY --from=composer:1.1 /usr/bin/composer /usr/bin/composer
+# support composer:1.1 for php 7.1.33
+# RUN composer self-update
 
 # Clean up
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
