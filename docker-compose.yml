@@ -23,7 +23,7 @@ services:
       - internal_dockernet
 
   php71:
-    image: php71:latest-dev
+    image: php71:latest-basic
     container_name: php71
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
@@ -36,7 +36,7 @@ services:
       - internal_dockernet
 
   php83:
-    image: php83:latest-dev
+    image: php83:latest-basic
     container_name: php83
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
