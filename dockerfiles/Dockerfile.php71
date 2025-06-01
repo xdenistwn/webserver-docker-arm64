@@ -82,10 +82,5 @@ RUN cd /opt/wkhtmltopdf \
     && dpkg -i wkhtmltox_0.12.6-1.buster_arm64.deb \
     && rm wkhtmltox_0.12.6-1.buster_arm64.deb
 
-# install composer
-COPY --from=composer:1.1 /usr/bin/composer /usr/bin/composer
-# support composer:1.1 for php 7.1.33
-# RUN composer self-update
-
 # Clean up
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

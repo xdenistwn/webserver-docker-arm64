@@ -1,0 +1,36 @@
+services:
+  nginx:
+    image: nginx:latest-dev
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.nginx
+
+  php71basic:
+    image: php71:latest-basic
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.php71-basic
+
+  php83basic:
+    image: php83:latest-basic
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.php83-basic
+
+  # php71:
+  #   image: php71:latest-dev
+  #   build: 
+  #     context: ./dockerfiles
+  #     dockerfile: Dockerfile.php71
+
+  # php83:
+  #   image: php83:latest-dev
+  #   build:
+  #     context: ./dockerfiles
+  #     dockerfile: Dockerfile.php83
+  
+  composer_288:
+    image: composer:2.8.8
+  
+  composer_113:
+    image: composer:1.1.3

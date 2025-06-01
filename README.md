@@ -1,7 +1,9 @@
-# About !t (arm64 version)
-webserver-docker-arm64 is a web server application that run using docker containers tools and has ability of sharing project directory under localhost domain, like xampp htdocs does. this version work only for arm64 architecture.
+# About !t
+
+webserver-docker-arm64 is a web server application that run using docker containers tools and has ability of sharing project directory under localhost domain, like xampp htdocs does. this version work only for arm64 CPU.
 
 `Main goals of using container`
+
 - keep your development machine clean of unnecessary libraries 😎
 - keep development dependencies consistent on all machine 😏
 - easy to upgrade / downgrade libraries✌️
@@ -9,86 +11,88 @@ webserver-docker-arm64 is a web server application that run using docker contain
 - experiments with open-source tools without worrying about dependencies error.
 
 `Current stacks`
+
 - Nginx latest
 - PHP 7.1
-    - Wkhtmltopdf 0.12.6
-    - Composer 1.1
-    - DB connect
-        - Oracle 11.2 / 19
-        - PostgreSQL
-        - MySQL
-        - PDO
+  - Wkhtmltopdf 0.12.6
+  - Composer 1.1
+  - DB connect
+    - Oracle 11.2 / 19
+    - PostgreSQL
+    - MySQL
+    - PDO
 - PHP 8.3.20
-    - Wkhtmltopdf 0.12.6.1-r3
-    - Composer 2.8.8
-    - DB connect
-        - Oracle 11.2 / 19
-        - PostgreSQL
-        - MySQL
-        - PDO
+  - Wkhtmltopdf 0.12.6.1-r3
+  - Composer 2.8.8
+  - DB connect
+    - Oracle 11.2 / 19
+    - PostgreSQL
+    - MySQL
+    - PDO
 
-`Requirements`
+`Requirements` **important**
+
 - Machine that using amd64 architecture
 - docker-engine
 - Internet Access (to download and build images)
 
 ## Guides (how to run webserver)
-- Goto repo root directory
+- in terminal (wsl/colima) Goto repo root directory
 
-  ```bash
-  cd to/your/downloaded/repo
+  ```
+  cd to/your/web_server_docker
   ```
 
-- Install Docker Images nginx
+- Build docker images
 
-  ```bash
-  docker build -t nginx:latest-dev -f ./dockerfiles/Dockerfile.nginx .
+  ```
+  docker compose -f docker-compose.build.yml build
   ```
 
-- Install Docker Images PHP 7.1
+- Setup projects directory
 
-  ```bash
-  docker build -t php71:latest-dev -f ./dockerfiles/Dockerfile.php71 .
+  ```
+  copy .env.example and rename it as .env
+  ---
+  cp .env.example .env
+
+  open up .env file and change the project path (must be in linux path format)
+  ---
+  PROJECTS_PATH=/mnt/c/Users/my_working_project/projects
   ```
 
-- Install Docker Images PHP 8.3.2
+- Run Web Server using docker-compose.yml
 
-  ```bash
-  docker build -t php83:latest-dev -f ./dockerfiles/Dockerfile.php83 .
   ```
-
-- Run Web Server using docker-compose.yml (important: dont forget to change YOUR_SHARED_PROJECTS_DIRECTORY with your own sharing project folder directory in docker-compose.yml)
-
-  ```bash
-  docker-compose up -d
+  docker compose up -d
   ```
 
 - Stop Web Server using docker-compose.yml
 
-  ```bash
-  docker-compose stop
+  ```
+  docker compose stop
   ```
 
 - Remove/Delete Web Server using docker-compose.yml (optional)
 
-  ```bash
+  ```
   docker-compose down
   ```
 
 - How to run **php83** console script from outside container
 
-  ```bash
+  ```
   check php modules
-  - docker exec -it php83 sh -c "php -m"
+  - docker compose exec php83 sh -c "php -m"
 
   yii2 console
-  - docker exec -it php83 sh -c "cd your_yii2_project php yii some/controller-script"
+  - docker compose exec php83 sh -c "cd your_yii2_project && php yii some/controller-script"
 
-  composer
-  - docker exec -it php83 sh -c "cd your_yii2_project && composer --version"
+  composer (check up version)
+  - docker compose run --rm composer_php8 sh -c "cd your_yii2_project && composer --version"
 
   install project with composer
-  - docker exec -it php83 sh -c "composer create-project --prefer-dist yiisoft/yii2-app-basic your_yii2_project"
+  - docker compose run --rm composer_php8 sh -c "composer create-project --prefer-dist yiisoft/yii2-app-basic your_yii2_project"
   ```
 
 - After Install some project try to access it with this url
@@ -98,6 +102,7 @@ webserver-docker-arm64 is a web server application that run using docker contain
   ```
 
 ## Directory & Files Structure
+
 ```
 / --- root folder
 /config --- custom configuration
@@ -114,10 +119,13 @@ webserver-docker-arm64 is a web server application that run using docker contain
 ```
 
 ## Notes
+
 - Some projects may need some adjustment in the configuration.
 - We still maintain & update this repo for flexibility, patch and security update.
 - If you found any error/bug/improvement, please raise in issues.
 - any help/contribution will be appreciated.
 
 ## Next Update Goals
+
 - Node.js runtime
+- Making Stable in WSL2 system
