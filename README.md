@@ -33,7 +33,7 @@ webserver-docker-arm64 is a web server application that run using docker contain
 `Requirements` **important**
 
 - Machine that using amd64 architecture
-- docker-engine
+- docker desktop or colima to run docker engine
 - Internet Access (to download and build images)
 
 ## Guides (how to run webserver)
