@@ -46,7 +46,7 @@ webserver-docker-arm64 is a web server application that run using docker contain
 - Build docker images
 
   ```
-  docker compose -f docker-compose.build.yml build
+  docker compose -f dockerfiles/docker-compose.build.yml build
   ```
 
 - Setup projects directory
@@ -58,7 +58,7 @@ webserver-docker-arm64 is a web server application that run using docker contain
 
   open up .env file and change the project path (must be in linux path format)
   ---
-  PROJECTS_PATH=/mnt/c/Users/my_working_project/projects
+  PROJECTS_PATH=/Users/user/working/projects
   ```
 
 - Run Web Server using docker-compose.yml

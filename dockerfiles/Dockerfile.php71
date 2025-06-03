@@ -49,8 +49,8 @@ ENV OCI_VERSION=19
 # Install Procedure
 ###
 RUN mkdir /opt/oracle
-ADD dockerfiles/oracle/instantclient-basic-linux-arm64.zip /opt/oracle
-ADD dockerfiles/oracle/instantclient-sdk-linux-arm64.zip /opt/oracle
+ADD packages/oracle/instantclient-basic-linux-arm64.zip /opt/oracle
+ADD packages/oracle/instantclient-sdk-linux-arm64.zip /opt/oracle
 RUN cd /opt/oracle && unzip instantclient-basic-linux-arm64.zip -d /opt/oracle \
     && unzip instantclient-sdk-linux-arm64.zip -d /opt/oracle \
     && echo /opt/oracle/instantclient_19_19 > /etc/ld.so.conf.d/oracle-instantclient.conf \
