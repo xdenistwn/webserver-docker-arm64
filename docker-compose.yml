@@ -30,7 +30,7 @@ services:
       - internal_dockernet
 
   php71:
-    image: php71:latest-basic
+    image: php71:latest-dev
     container_name: php71
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
@@ -43,7 +43,7 @@ services:
       - internal_dockernet
 
   php83:
-    image: php83:latest-basic
+    image: php83:latest-dev
     container_name: php83
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
@@ -55,18 +55,6 @@ services:
     networks:
       - internal_dockernet
   
-  composer_php8:
-    image: composer:2.8.8
-    container_name: composer_php8
-    volumes:
-      - ${PROJECTS_PATH}:/app
-  
-  composer_php7:
-    image: composer:1.1.3
-    container_name: composer_php7
-    volumes:
-      - ${PROJECTS_PATH}:/app
-
 networks:
   internal_dockernet:
     driver: bridge

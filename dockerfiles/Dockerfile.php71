@@ -82,5 +82,8 @@ RUN cd /opt/wkhtmltopdf \
     && dpkg -i wkhtmltox_0.12.6-1.buster_arm64.deb \
     && rm wkhtmltox_0.12.6-1.buster_arm64.deb
 
+# copy composer runtime build into this image
+COPY --from=composer:1.10.0 /usr/bin/composer /usr/bin/composer
+
 # Clean up
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
