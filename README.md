@@ -86,13 +86,13 @@ webserver-docker-arm64 is a web server application that run using docker contain
   - docker compose exec php83 sh -c "php -m"
 
   yii2 console
-  - docker compose exec php83 sh -c "cd your_yii2_project && php yii some/controller-script"
+  - docker compose exec php83 sh -c "cd your_yii2_project_name && php yii some/controller-script"
 
   composer (check up version)
-  - docker compose run --rm composer_php8 sh -c "cd your_yii2_project && composer --version"
+  - docker compose exec php83 sh -c "cd your_yii2_project_name && composer --version"
 
   install project with composer
-  - docker compose run --rm composer_php8 sh -c "composer create-project --prefer-dist yiisoft/yii2-app-basic your_yii2_project"
+  - docker compose exec php83 sh -c "composer create-project --prefer-dist yiisoft/yii2-app-basic your_yii2_project_name"
   ```
 
 - After Install some project try to access it with this url
