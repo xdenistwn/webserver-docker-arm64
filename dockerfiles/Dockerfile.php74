@@ -1,9 +1,6 @@
-FROM php:7.1-fpm
+FROM php:7.4-fpm
 
-RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
-    sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
-    sed -i '/updates/d' /etc/apt/sources.list \
-    && apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         # dependencies (runtime required)
         wget \
         zip \
@@ -22,19 +19,19 @@ RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
         libpng-dev \
         libssl-dev \
         libcurl4-openssl-dev \
-        libmcrypt-dev \
         libxml2-dev \
         zlib1g-dev \
         libjpeg-dev \
         libpq-dev \
+        libzip-dev \
     # build php extension
     && docker-php-ext-install \
-        mcrypt pdo pdo_pgsql mysqli pdo_mysql \
+        pdo pdo_pgsql mysqli pdo_mysql \
         bcmath soap sockets sysvmsg sysvsem sysvshm zip gd \
     # remove *-dev packages
     && apt-get purge -y --auto-remove \
         libpng-dev libssl-dev libcurl4-openssl-dev \
-        libmcrypt-dev libxml2-dev zlib1g-dev libjpeg-dev libpq-dev \
+        libzip-dev libxml2-dev zlib1g-dev libjpeg-dev libpq-dev \
     # clean up
     && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -66,6 +63,6 @@ RUN mkdir /opt/wkhtmltopdf && cd /opt/wkhtmltopdf \
     && wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_arm64.deb \
     && dpkg -i wkhtmltox_0.12.6-1.buster_arm64.deb \
     && rm wkhtmltox_0.12.6-1.buster_arm64.deb
-    
+
 # copy composer runtime build into this image
-COPY --from=composer:1.10.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8.8 /usr/bin/composer /usr/bin/composer

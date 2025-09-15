@@ -9,14 +9,16 @@
 # notes:
 # set {PROJECTS_PATH} in .env file and must be in linux format.
 # put your working php projects inside PROJECTS_PATH dir
-# port 80/443 => using php-fpm 8.3
+# port 80/443 => using php-fpm 8.4
 # port 8070 => using php-fpm 7.1
+# port 8074 => using php-fpm 7.4
 #
 
 services:
   nginx:
     image: nginx:latest-dev
     container_name: nginx
+    restart: unless-stopped
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -26,15 +28,21 @@ services:
       - 80:80
       - 443:443
       - 8070:8070
+      - 8074:8074
     networks:
       - internal_dockernet
+    depends_on:
+      - php71
+      - php74
+      - php84
 
   php71:
     image: php71:latest-dev
     container_name: php71
+    restart: unless-stopped
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
-      - ./config/php/v7/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./config/php/v71/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
     environment:
       - TZ=Asia/Jakarta
     expose:
@@ -42,12 +50,27 @@ services:
     networks:
       - internal_dockernet
 
-  php83:
-    image: php83:latest-dev
-    container_name: php83
+  php74:
+    image: php74:latest-dev
+    container_name: php74
+    restart: unless-stopped
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
-      - ./config/php/v8/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./config/php/v74/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+    environment:
+      - TZ=Asia/Jakarta
+    expose:
+      - 9000
+    networks:
+      - internal_dockernet
+
+  php84:
+    image: php84:latest-dev
+    container_name: php84
+    restart: unless-stopped
+    volumes:
+      - ${PROJECTS_PATH}:/var/www/html
+      - ./config/php/v84/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
     environment:
       - TZ=Asia/Jakarta
     expose:

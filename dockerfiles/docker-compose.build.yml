@@ -25,8 +25,14 @@ services:
       context: .
       dockerfile: Dockerfile.php71
 
-  php83:
-    image: php83:latest-dev
+  php74:
+    image: php74:latest-dev
+    build: 
+      context: .
+      dockerfile: Dockerfile.php74
+
+  php84:
+    image: php84:latest-dev
     build:
       context: .
-      dockerfile: Dockerfile.php83
+      dockerfile: Dockerfile.php84
