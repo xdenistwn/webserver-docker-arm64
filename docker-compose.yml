@@ -40,6 +40,8 @@ services:
     image: php71:latest-dev
     container_name: php71
     restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
     volumes:
       - ${PROJECTS_PATH}:/var/www/html
       - ./config/php/v71/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf

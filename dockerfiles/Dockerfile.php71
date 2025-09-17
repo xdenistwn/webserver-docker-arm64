@@ -30,7 +30,7 @@ RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
     # build php extension
     && docker-php-ext-install \
         mcrypt pdo pdo_pgsql mysqli pdo_mysql \
-        bcmath soap sockets sysvmsg sysvsem sysvshm zip gd \
+        bcmath soap sockets sysvmsg sysvsem sysvshm zip gd opcache\
     # remove *-dev packages
     && apt-get purge -y --auto-remove \
         libpng-dev libssl-dev libcurl4-openssl-dev \
