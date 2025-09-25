@@ -68,4 +68,4 @@ RUN mkdir /opt/wkhtmltopdf && cd /opt/wkhtmltopdf \
     && rm wkhtmltox_0.12.6-1.buster_arm64.deb
     
 # copy composer runtime build into this image
-COPY --from=composer:1.10.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.2.25 /usr/bin/composer /usr/bin/composer
