@@ -24,6 +24,44 @@ webserver-docker-arm64 is a web server application that run using docker contain
 - for windows/mac OS you need to install docker engine
 - Internet Access (to download and build images)
 
+## Architecture
+```mermaid
+graph TD
+    Client([Client Browser]) --> Nginx
+
+    subgraph Docker Setup [Docker Host Network]
+        Nginx[Nginx Web Server]
+
+        subgraph PHP-FPM Containers
+            PHP84[PHP 8.4<br/>Ports 80 / 443]
+            PHP74[PHP 7.4<br/>Port 8074]
+            PHP71[PHP 7.1<br/>Port 8070]
+        end
+
+        subgraph Database Containers
+            PGDB[(PostgreSQL DB<br/>Port 5432)]
+            PGLOG[(PostgreSQL Log DB<br/>Port 54321)]
+        end
+
+        Nginx -->|Proxy Pass| PHP84
+        Nginx -->|Proxy Pass| PHP74
+        Nginx -->|Proxy Pass| PHP71
+
+        PHP84 -.->|Connect| PGDB
+        PHP74 -.->|Connect| PGDB
+        PHP71 -.->|Connect| PGDB
+
+        PHP84 -.->|Connect| PGLOG
+        PHP74 -.->|Connect| PGLOG
+        PHP71 -.->|Connect| PGLOG
+    end
+
+    HostDir["Host Machine<br/>${PROJECTS_PATH}"] -.->|Volume Mount /var/www/html| Nginx
+    HostDir -.->|Volume Mount /var/www/html| PHP84
+    HostDir -.->|Volume Mount /var/www/html| PHP74
+    HostDir -.->|Volume Mount /var/www/html| PHP71
+```
+
 ## Guide to start docker webserver
 - in terminal (wsl/colima) Goto repo root directory
 
