@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
         wget \
         zip \
         unzip \
+	    git \
         libxext6 \
         fontconfig \
         xfonts-base \
@@ -15,6 +16,7 @@ RUN apt-get update && apt-get install -y \
         libpq5 \
         libzip5\
         libmcrypt4 \
+        librdkafka1 \
         # dependencies (build required, will be purge after build)
         libjpeg62-turbo-dev \
         libssl-dev \
@@ -25,6 +27,13 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libpq-dev \
         libzip-dev \
+        librdkafka-dev \
+    # Install Node.js LTS
+    && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    # kafka
+    && pecl install redis rdkafka \
+    && docker-php-ext-enable redis rdkafka \
     # build php extension
     && docker-php-ext-install \
         pdo pdo_pgsql mysqli pdo_mysql \
@@ -32,7 +41,7 @@ RUN apt-get update && apt-get install -y \
     # remove *-dev packages
     && apt-get purge -y --auto-remove \
         libjpeg62-turbo-dev libssl-dev libcurl4-openssl-dev \
-        libmcrypt-dev libxml2-dev zlib1g-dev libpng-dev libpq-dev libzip-dev \
+        libmcrypt-dev libxml2-dev zlib1g-dev libpng-dev libpq-dev libzip-dev librdkafka-dev \
     # clean up
     && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

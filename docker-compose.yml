@@ -65,3 +65,40 @@ services:
     environment:
       - TZ=Asia/Jakarta
     network_mode: host
+
+  pgsql_db:
+    image: postgres:17-alpine
+    container_name: pgsql_db
+    restart: always
+    environment:
+      # Default credentials
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: postgres
+    expose:
+      - "5432"
+    volumes:
+      - ./config/pgsql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - postgres_data:/var/lib/postgresql/data
+    network_mode: host
+
+  pgsql_log_db:
+    image: postgres:17-alpine
+    container_name: pgsql_log_db
+    restart: always
+    environment:
+      # Default credentials
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: postgres
+      PGPORT: 54321
+    expose:
+      - "54321"
+    volumes:
+      - ./config/pgsql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - postgres_log_data:/var/lib/postgresql/data
+    network_mode: host
+
+volumes:
+  postgres_data:
+  postgres_log_data:
