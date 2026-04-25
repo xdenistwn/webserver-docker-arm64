@@ -1,6 +1,6 @@
 FROM php:8.4-fpm
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
         # dependencies (runtime required)
         wget \
         zip \
@@ -43,7 +43,8 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev libssl-dev libcurl4-openssl-dev \
         libmcrypt-dev libxml2-dev zlib1g-dev libpng-dev libpq-dev libzip-dev librdkafka-dev \
     # clean up
-    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && docker-php-source delete \
+    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /tmp/pear
 
 ##
 # Oracle Installation
@@ -66,14 +67,15 @@ RUN --mount=type=bind,source=packages/oracle,target=/tmp/oracle \
     && echo "extension=oci8.so" >> /usr/local/etc/php/conf.d/oci8.ini \
     && echo 'instantclient,/opt/oracle/instantclient_19_19' | pecl install pdo_oci \
     && echo "extension=pdo_oci.so" > /usr/local/etc/php/conf.d/pdo_oci.ini \
-    && docker-php-ext-enable pdo_pgsql pdo_mysql
+    && docker-php-ext-enable pdo_pgsql pdo_mysql \
+    && rm -rf /opt/oracle/instantclient_19_19/sdk \
+    && rm -rf /tmp/pear \
+    && ldconfig
 
 # install wkhtmltopdf ARM64 base
-RUN mkdir /opt/wkhtmltopdf
-RUN cd /opt/wkhtmltopdf \
-    && wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_arm64.deb \
-    && dpkg -i wkhtmltox_0.12.6.1-3.bookworm_arm64.deb \
-    && rm wkhtmltox_0.12.6.1-3.bookworm_arm64.deb
+RUN curl -fsSL https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_arm64.deb -o /tmp/wkhtmltox.deb \
+    && dpkg -i /tmp/wkhtmltox.deb \
+    && rm /tmp/wkhtmltox.deb
 
 # copy composer runtime build into this image
 COPY --from=composer:2.8.8 /usr/bin/composer /usr/bin/composer

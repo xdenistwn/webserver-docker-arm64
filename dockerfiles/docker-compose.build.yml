@@ -14,25 +14,25 @@
 
 services:
   nginx:
-    image: nginx:latest-dev
+    image: nginx:local
     build:
       context: .
       dockerfile: Dockerfile.nginx
 
   php71:
-    image: php71:latest-dev
+    image: php71:local
     build: 
       context: .
       dockerfile: Dockerfile.php71
 
   php74:
-    image: php74:latest-dev
+    image: php74:local
     build: 
       context: .
       dockerfile: Dockerfile.php74
 
   php84:
-    image: php84:latest-dev
+    image: php84:local
     build:
       context: .
       dockerfile: Dockerfile.php84

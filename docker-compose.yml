@@ -16,7 +16,7 @@
 
 services:
   nginx:
-    image: nginx:latest-dev
+    image: nginx:local
     container_name: nginx
     restart: unless-stopped
     volumes:
@@ -32,7 +32,7 @@ services:
       - php84
 
   php71:
-    image: php71:latest-dev
+    image: php71:local
     container_name: php71
     restart: unless-stopped
     cap_add:
@@ -45,7 +45,7 @@ services:
     network_mode: host
 
   php74:
-    image: php74:latest-dev
+    image: php74:local
     container_name: php74
     restart: unless-stopped
     volumes:
@@ -56,7 +56,7 @@ services:
     network_mode: host
 
   php84:
-    image: php84:latest-dev
+    image: php84:local
     container_name: php84
     restart: unless-stopped
     volumes:
@@ -66,39 +66,26 @@ services:
       - TZ=Asia/Jakarta
     network_mode: host
 
-  pgsql_db:
-    image: postgres:17-alpine
-    container_name: pgsql_db
-    restart: always
+  pgsql:
+    image: postgres:18.1-alpine
+    container_name: pgsql
+    restart: unless-stopped
     environment:
       # Default credentials
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: postgres
-    expose:
-      - "5432"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
     volumes:
       - ./config/pgsql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - postgres_data:/var/lib/postgresql/data
-    network_mode: host
+      - pgsql_data:/var/lib/postgresql/data
+    networks:
+      - local-network
 
-  pgsql_log_db:
-    image: postgres:17-alpine
-    container_name: pgsql_log_db
-    restart: always
-    environment:
-      # Default credentials
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: postgres
-      PGPORT: 54321
-    expose:
-      - "54321"
-    volumes:
-      - ./config/pgsql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - postgres_log_data:/var/lib/postgresql/data
-    network_mode: host
+networks:
+  local-network:
+    external: true
 
 volumes:
-  postgres_data:
-  postgres_log_data:
+  pgsql_data:
